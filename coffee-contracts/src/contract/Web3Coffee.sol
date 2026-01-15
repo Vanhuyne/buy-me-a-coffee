@@ -5,7 +5,7 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 contract Web3Coffee {
     IERC20 public usdc;
-    uint256 public platformFee = 3; // 3%
+    uint256 public platformFee = 2; 
     address public owner;
     
     mapping(address => uint256) public creatorBalance;
@@ -27,12 +27,8 @@ contract Web3Coffee {
         owner = msg.sender;
     }
     
-    /**
-     * Donate to a creator
-     * @param creator Creator's wallet address
-     * @param amount Amount in USDC
-     * @param message Support message
-     */
+    
+    // Donate to a creator
     function donate(
         address creator,
         uint256 amount,
@@ -57,10 +53,7 @@ contract Web3Coffee {
         emit Donation(creator, msg.sender, creatorAmount, message);
     }
     
-    /**
-     * Withdraw creator's balance
-     * @param amount Amount to withdraw
-     */
+    // withdraw funds by creator
     function withdraw(uint256 amount) external {
         require(amount > 0, "Amount > 0");
         require(creatorBalance[msg.sender] >= amount, "Insufficient balance");
@@ -74,9 +67,7 @@ contract Web3Coffee {
         emit Withdrawal(msg.sender, amount);
     }
     
-    /**
-     * Get creator's current balance
-     */
+    // Get creator balance
     function getBalance(address creator) external view returns (uint256) {
         return creatorBalance[creator];
     }
