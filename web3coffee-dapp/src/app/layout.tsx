@@ -1,25 +1,27 @@
-// app/layout.tsx
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "./globals.css";
-import { Providers } from "./providers";
-
-const inter = Inter({ subsets: ["latin"] });
+import type { Metadata } from 'next';
+import { headers } from 'next/headers';
+import ContextProvider from '@/context';
+import './globals.css';
 
 export const metadata: Metadata = {
-  title: "Web3 Coffee - Support Creators with USDC",
-  description: "Support your favorite creators with USDC donations",
+  title: 'Web3 Coffee',
+  description: 'Support creators with USDC',
 };
 
-export default function RootLayout({
-  children,
+export default async function RootLayout({
+  children
 }: {
   children: React.ReactNode;
 }) {
+  const headersObj = await headers();
+  const cookies = headersObj.get('cookie');
+
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <Providers>{children}</Providers>
+      <body>
+        <ContextProvider cookies={cookies}>
+          {children}
+        </ContextProvider>
       </body>
     </html>
   );
