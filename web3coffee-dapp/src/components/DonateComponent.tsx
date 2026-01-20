@@ -66,7 +66,7 @@ export default function DonateComponent() {
       <div className="max-w-md mx-auto py-8">
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">☕ Web3 Coffee</h1>
-          <p className="text-sm text-gray-600">Support creators with USDC</p>
+          <p className="text-sm text-gray-600">Support creators you like</p>
         </div>
 
         <div className="mb-6">

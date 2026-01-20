@@ -1,6 +1,6 @@
 
 // Contract
-export const USDC_ADDRESS = '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48' as const;
+export const USDC_ADDRESS = '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913' as const;
 export const DONATION_CONTRACT = '0x742d35Cc6634C0532925a3b844Bc9e7595f42b5e' as const;
 export const USDC_DECIMALS = 6;
 
@@ -62,7 +62,7 @@ export const DONATION_ABI = [
 // Helper functions
 export const formatBalance = (balance: bigint | undefined): string => {
   if (!balance) return '0';
-  return (balance / BigInt(10 ** USDC_DECIMALS)).toString();
+  return (Number(balance) / 10 ** USDC_DECIMALS).toFixed(2);
 };
 
 export const formatFee = (amount: string, feePercent: number): string => {
