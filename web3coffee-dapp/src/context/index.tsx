@@ -16,6 +16,7 @@ const metadata = {
   icons: ['https://avatars.githubusercontent.com/u/179229932']
 };
 
+// Create AppKit immediately - 'use client' ensures this only runs on client
 createAppKit({
   adapters: [wagmiAdapter],
   projectId,
