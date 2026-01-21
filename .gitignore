@@ -1,0 +1,37 @@
+# OS files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# IDE
+.vscode/
+.idea/
+*.code-workspace
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Dependencies
+node_modules/
+
+# Solidity / Foundry (coffee-contracts)
+coffee-contracts/cache/
+coffee-contracts/out/
+coffee-contracts/broadcast/*/31337/
+coffee-contracts/broadcast/**/dry-run/
+
+# Frontend build (web3coffee-dapp)
+web3coffee-dapp/.next/
+web3coffee-dapp/out/
+web3coffee-dapp/dist/
+web3coffee-dapp/build/
+web3coffee-dapp/.turbo/
