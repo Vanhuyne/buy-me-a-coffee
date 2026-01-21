@@ -3,26 +3,29 @@
 import { useAppKitAccount } from '@reown/appkit/react';
 import { useAppKit } from '@reown/appkit/react';
 import { useAppKitNetwork } from '@reown/appkit/react';
-import { useBalance, useReadContract } from 'wagmi';
-import { truncateAddress, formatBalance, USDC_ADDRESS, USDC_ABI } from '@/constants';
+import { useBalance } from 'wagmi';
+import { truncateAddress } from '@/constants';
 
 export function WalletConnection() {
   const { address, isConnected } = useAppKitAccount();
   const { open } = useAppKit();
   const { caipNetwork } = useAppKitNetwork();
 
-  const { data: ethBalance } = useBalance({
+  const { data: ethBalance, isLoading: isLoadingBalance } = useBalance({
     address: address as `0x${string}`, 
     query: { enabled: !!address }
   });
 
-  const { data: usdcBalance } = useReadContract({
-    address: USDC_ADDRESS,
-    abi: USDC_ABI,
-    functionName: 'balanceOf',
-    args: [address!] as [`0x${string}`],
-    query: { enabled: !!address }
-  }) as { data: bigint | undefined };
+  // Debug logs
+  console.log('🔍 WalletConnection Debug:', {
+    address,
+    isConnected,
+    ethBalance,
+    isLoadingBalance,
+    caipNetwork,
+    networkName: caipNetwork?.name,
+    networkId: caipNetwork?.id
+  });
 
   if (!isConnected) {
     return (
@@ -41,20 +44,22 @@ export function WalletConnection() {
       className="w-full bg-white border border-gray-200 rounded-lg p-4 hover:border-orange-300 hover:bg-orange-50 transition duration-200 text-left cursor-pointer"
     >
       <div className="flex items-center justify-between mb-2">
-        <span className="text-sm font-mono text-gray-900">{truncateAddress(address!)}</span>
+        <span className="text-sm font-mono text-gray-900">{address ? truncateAddress(address) : '...'}</span>
         <span className="text-xs text-green-600 font-medium">Connected</span>
       </div>
       <div className="space-y-1">
-        {ethBalance && (
-          <p className="text-sm text-gray-700">
-            {(Number(ethBalance.value) / 10 ** ethBalance.decimals).toFixed(4)} {ethBalance.symbol}
-          </p>
-        )}
-        {usdcBalance && (
-          <p className="text-sm text-gray-700">
-            {formatBalance(usdcBalance)} USDC
-          </p>
-        )}
+        <p className="text-sm text-gray-700">
+          {isLoadingBalance ? (
+            'Loading...'
+          ) : ethBalance ? (
+            `${(Number(ethBalance.value) / 10 ** ethBalance.decimals).toFixed(4)} ${ethBalance.symbol}`
+          ) : (
+            '0.0000 ETH'
+          )}
+        </p>
+        <p className="text-xs text-gray-500">
+          {caipNetwork?.name || 'Unknown Network'}
+        </p>
       </div>
     </button>
   );

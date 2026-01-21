@@ -40,7 +40,7 @@ export function DonationForm({
       )}
 
       <div className="mb-6">
-        <label className="block text-sm font-semibold text-gray-900 mb-3">Amount (USDC)</label>
+        <label className="block text-sm font-semibold text-gray-900 mb-3">Amount (USD)</label>
 
         <div className="grid grid-cols-4 gap-3 mb-4">
           {DONATION_PRESETS.map((preset) => (
@@ -112,7 +112,6 @@ export function DonationForm({
       >
         {isLoading && <Loader size={20} className="animate-spin" />}
         <Heart size={20} />
-        {state.txStep === 'approving' && 'Approving...'}
         {state.txStep === 'donating' && 'Processing...'}
         {state.txStep === 'success' && 'Success!'}
         {state.txStep === 'idle' && (isLoading ? 'Processing...' : `Donate $${state.amount || '0'}`)}

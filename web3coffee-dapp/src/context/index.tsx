@@ -3,7 +3,7 @@
 import { wagmiAdapter, projectId } from '@/config';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { createAppKit } from '@reown/appkit/react';
-import { base ,mainnet, sepolia } from '@reown/appkit/networks';
+import { base, baseSepolia, mainnet, sepolia } from '@reown/appkit/networks';
 import React, { ReactNode } from 'react';
 import { cookieToInitialState, WagmiProvider, type Config } from 'wagmi';
 
@@ -11,7 +11,7 @@ const queryClient = new QueryClient();
 
 const metadata = {
   name: 'Web3 Coffee',
-  description: 'Support creators with USDC',
+  description: 'Support creators with crypto on Base Sepolia',
   url: 'https://web3coffee.com',
   icons: ['https://avatars.githubusercontent.com/u/179229932']
 };
@@ -20,8 +20,8 @@ const metadata = {
 createAppKit({
   adapters: [wagmiAdapter],
   projectId,
-  networks: [base ,mainnet, sepolia],
-  defaultNetwork: base,
+  networks: [baseSepolia, base, mainnet, sepolia],
+  defaultNetwork: baseSepolia,
   metadata: metadata,
   features: {
     analytics: true

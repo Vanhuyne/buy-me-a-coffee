@@ -3,7 +3,6 @@
 import { useAccount } from 'wagmi';
 import { CREATOR_INFO } from '@/constants';
 import { useDonation } from '@/hooks/useDonation';
-import { useUSDCApproval } from '@/hooks/useUSDCApproval';
 import { WalletConnection } from './WalletConnection';
 import { CreatorCard } from './CreatorCard';
 import { DonationForm } from './DonationForm';
@@ -12,7 +11,6 @@ import { RecentDonations } from './RecentDonations';
 export default function DonateComponent() {
   const { address, isConnected } = useAccount();
   const { state, setState, executeDonation, isDonating } = useDonation(CREATOR_INFO.address);
-  const { approve, isApprovingUSDC } = useUSDCApproval();
 
   const handleDonate = async () => {
     // Validation
@@ -32,19 +30,12 @@ export default function DonateComponent() {
     }
 
     try {
-      setState({ ...state, error: '' });
+      setState({ ...state, error: '', txStep: 'donating' });
 
-      // Step 1: Approve
-      setState({ ...state, txStep: 'approving' });
-      const approved = await approve(state.amount);
-      if (!approved) return;
-
-      await new Promise(resolve => setTimeout(resolve, 1500));
-
-      // Step 2: Donate
+      // Execute donation (sends ETH to contract)
       await executeDonation(state.amount, state.message);
 
-      // Reset
+      // Reset form on success
       setTimeout(() => {
         setState({
           amount: '',
@@ -80,7 +71,7 @@ export default function DonateComponent() {
           setState={setState}
           onDonate={handleDonate}
           isConnected={isConnected}
-          isLoading={isApprovingUSDC || isDonating}
+          isLoading={isDonating}
         />
 
         <RecentDonations />

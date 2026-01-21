@@ -1,9 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import { useWriteContract } from 'wagmi';
+import { useWriteContract, useReadContract } from 'wagmi';
 import { parseUnits } from 'viem';
-import { DONATION_ABI, DONATION_CONTRACT, USDC_DECIMALS } from '@/constants';
+import { DONATION_ABI, DONATION_CONTRACT } from '@/constants';
 import { DonationState } from '@/types';
 
 export const useDonation = (creatorAddress: string) => {
@@ -18,17 +18,28 @@ export const useDonation = (creatorAddress: string) => {
     txStep: 'idle'
   });
 
+  // Get required ETH amount for USD donation
+  const { data: requiredEth } = useReadContract({
+    address: DONATION_CONTRACT,
+    abi: DONATION_ABI,
+    functionName: 'getUsdToEth',
+    args: state.amount ? [parseUnits(state.amount, 8)] : undefined, // USD with 8 decimals
+  });
+
   const executeDonation = async (amount: string, message: string) => {
     return new Promise<boolean>((resolve) => {
       setState(prev => ({ ...prev, txStep: 'donating' }));
-      const amountInWei = parseUnits(amount, USDC_DECIMALS);
+      
+      // Convert USD amount to 8 decimals for Chainlink price feed
+      const usdAmountIn8Decimals = parseUnits(amount, 8);
 
       donate(
         {
           address: DONATION_CONTRACT,
           abi: DONATION_ABI,
-          functionName: 'donate',
-          args: [amountInWei, message, creatorAddress as `0x${string}`]
+          functionName: 'donateWithUsdAmount',
+          args: [creatorAddress as `0x${string}`, usdAmountIn8Decimals, message],
+          value: requiredEth || BigInt(0) // Send required ETH amount
         },
         {
           onSuccess: (data) => {
@@ -52,5 +63,5 @@ export const useDonation = (creatorAddress: string) => {
     });
   };
 
-  return { state, setState, executeDonation, isDonating };
+  return { state, setState, executeDonation, isDonating, requiredEth };
 };
