@@ -1,6 +1,6 @@
 
 // Contract - Web3CoffeeOptimized deployed on Base Sepolia
-export const DONATION_CONTRACT = '0x91d0427efdfab2e970c59ff58f913394312febc1' as const;
+export const DONATION_CONTRACT = (process.env.NEXT_PUBLIC_DONATION_CONTRACT || '0x91d0427efdfab2e970c59ff58f913394312febc1') as `0x${string}`;
 
 // Donation
 export const DONATION_PRESETS = [5, 10, 20, 50]; // USD amounts

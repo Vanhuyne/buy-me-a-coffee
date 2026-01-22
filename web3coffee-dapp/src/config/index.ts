@@ -2,13 +2,14 @@ import { cookieStorage, createStorage, http } from 'wagmi';
 import { WagmiAdapter } from '@reown/appkit-adapter-wagmi';
 import { base, baseSepolia, mainnet, sepolia } from '@reown/appkit/networks';
 
-// const projectId = process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID!;
-export const projectId = '5b55a3d7448009f7e09aabab2574b580'
+// Get project ID from environment variables
+const projectIdEnv = process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID;
 
-
-if (!projectId) {
-  throw new Error('Project ID is not defined');
+if (!projectIdEnv) {
+  throw new Error('NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID is not defined in .env.local');
 }
+
+export const projectId: string = projectIdEnv;
 
 export const networks = [baseSepolia, base, mainnet, sepolia];
 
