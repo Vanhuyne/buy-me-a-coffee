@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useWriteContract, useReadContract } from 'wagmi';
-import { parseUnits } from 'viem';
+import { parseUnits, getAddress } from 'viem';
 import { DONATION_ABI, DONATION_CONTRACT } from '@/constants';
 import { DonationState } from '@/types';
 
@@ -32,17 +32,34 @@ export const useDonation = (creatorAddress: string) => {
       
       // Convert USD amount to 8 decimals for Chainlink price feed
       const usdAmountIn8Decimals = parseUnits(amount, 8);
+      
+      // Ensure creator address has proper checksum
+      const checksummedCreator = getAddress(creatorAddress);
+
+      console.log('🚀 Starting donation:', {
+        creator: checksummedCreator,
+        usdAmount: amount,
+        message,
+        requiredEth: requiredEth ? `${Number(requiredEth) / 10**18} ETH` : 'calculating...',
+        contract: DONATION_CONTRACT
+      });
 
       donate(
         {
           address: DONATION_CONTRACT,
           abi: DONATION_ABI,
           functionName: 'donateWithUsdAmount',
-          args: [creatorAddress as `0x${string}`, usdAmountIn8Decimals, message],
+          args: [checksummedCreator as `0x${string}`, usdAmountIn8Decimals, message],
           value: requiredEth || BigInt(0) // Send required ETH amount
         },
         {
           onSuccess: (data) => {
+            console.log('✅ Donation successful!', {
+              txHash: data,
+              explorer: `https://sepolia.basescan.org/tx/${data}`,
+              amount: `$${amount}`,
+              requiredEth: requiredEth ? `${Number(requiredEth) / 10**18} ETH` : 'N/A'
+            });
             setState(prev => ({
               ...prev,
               txStep: 'success',
@@ -51,6 +68,11 @@ export const useDonation = (creatorAddress: string) => {
             resolve(true);
           },
           onError: (error: any) => {
+            console.error('❌ Donation failed:', {
+              error: error?.message,
+              code: error?.code,
+              details: error
+            });
             setState(prev => ({
               ...prev,
               error: error?.message || 'Donation failed',

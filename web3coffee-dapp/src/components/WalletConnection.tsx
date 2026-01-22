@@ -11,20 +11,9 @@ export function WalletConnection() {
   const { open } = useAppKit();
   const { caipNetwork } = useAppKitNetwork();
 
-  const { data: ethBalance, isLoading: isLoadingBalance } = useBalance({
+  const { data: ethBalance } = useBalance({
     address: address as `0x${string}`, 
     query: { enabled: !!address }
-  });
-
-  // Debug logs
-  console.log('🔍 WalletConnection Debug:', {
-    address,
-    isConnected,
-    ethBalance,
-    isLoadingBalance,
-    caipNetwork,
-    networkName: caipNetwork?.name,
-    networkId: caipNetwork?.id
   });
 
   if (!isConnected) {
@@ -49,9 +38,7 @@ export function WalletConnection() {
       </div>
       <div className="space-y-1">
         <p className="text-sm text-gray-700">
-          {isLoadingBalance ? (
-            'Loading...'
-          ) : ethBalance ? (
+          {ethBalance ? (
             `${(Number(ethBalance.value) / 10 ** ethBalance.decimals).toFixed(4)} ${ethBalance.symbol}`
           ) : (
             '0.0000 ETH'

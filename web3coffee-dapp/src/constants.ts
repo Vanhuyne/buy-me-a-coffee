@@ -105,16 +105,6 @@ export const DONATION_ABI = [
 ] as const;
 
 // Helper functions
-export const formatBalance = (balance: bigint | undefined): string => {
-  if (!balance) return '0';
-  return (Number(balance) / 10 ** 18).toFixed(4); // ETH has 18 decimals
-};
-
-export const formatUSD = (amount: bigint | undefined): string => {
-  if (!amount) return '0';
-  return (Number(amount) / 10 ** 8).toFixed(2); // USD from Chainlink has 8 decimals
-};
-
 export const formatFee = (amount: string, feePercent: number): string => {
   if (!amount) return '0.00';
   return (parseFloat(amount) * feePercent / 100).toFixed(2);
