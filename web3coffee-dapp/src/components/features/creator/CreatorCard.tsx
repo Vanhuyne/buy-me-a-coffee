@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { Copy, Check } from 'lucide-react';
-import { CREATOR_INFO, truncateAddress } from '@/constants';
+import { CREATOR_INFO, truncateAddress } from '@/lib/constants';
 
 export function CreatorCard() {
   const [copied, setCopied] = useState(false);

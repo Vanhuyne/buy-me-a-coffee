@@ -3,8 +3,8 @@
 import { useState } from 'react';
 import { useWriteContract, useReadContract } from 'wagmi';
 import { parseUnits, getAddress } from 'viem';
-import { DONATION_ABI, DONATION_CONTRACT } from '@/constants';
-import { DonationState } from '@/types';
+import { DONATION_ABI, DONATION_CONTRACT } from '@/lib/constants';
+import { DonationState } from '@/types/donation';
 
 export const useDonation = (creatorAddress: string) => {
   const { writeContract: donate, isPending: isDonating } = useWriteContract();

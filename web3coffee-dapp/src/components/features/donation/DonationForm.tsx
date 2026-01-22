@@ -1,8 +1,8 @@
 'use client';
 
 import { Heart, AlertCircle, Loader } from 'lucide-react';
-import { DONATION_PRESETS, MESSAGE_MAX_LENGTH, PLATFORM_FEE, formatFee, formatCreatorAmount } from '@/constants';
-import { DonationState } from '@/types';
+import { DONATION_PRESETS, MESSAGE_MAX_LENGTH, PLATFORM_FEE, formatFee, formatCreatorAmount } from '@/lib/constants';
+import { DonationState } from '@/types/donation';
 
 interface Props {
   state: DonationState;

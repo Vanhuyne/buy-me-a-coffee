@@ -4,7 +4,7 @@ import { useAppKitAccount } from '@reown/appkit/react';
 import { useAppKit } from '@reown/appkit/react';
 import { useAppKitNetwork } from '@reown/appkit/react';
 import { useBalance } from 'wagmi';
-import { truncateAddress } from '@/constants';
+import { truncateAddress } from '@/lib/constants';
 
 export function WalletConnection() {
   const { address, isConnected } = useAppKitAccount();

@@ -1,12 +1,12 @@
 'use client';
 
 import { useAccount } from 'wagmi';
-import { CREATOR_INFO } from '@/constants';
+import { CREATOR_INFO } from '@/lib/constants';
 import { useDonation } from '@/hooks/useDonation';
-import { WalletConnection } from './WalletConnection';
-import { CreatorCard } from './CreatorCard';
-import { DonationForm } from './DonationForm';
-import { RecentDonations } from './RecentDonations';
+import { WalletConnection } from '@/components/layout/WalletConnection';
+import { CreatorCard } from '@/components/features/creator/CreatorCard';
+import { DonationForm } from '@/components/features/donation/DonationForm';
+import { RecentDonations } from '@/components/features/donation/RecentDonations';
 
 export default function DonateComponent() {
   const { address, isConnected } = useAccount();

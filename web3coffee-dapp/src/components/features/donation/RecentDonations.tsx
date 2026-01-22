@@ -1,6 +1,6 @@
 'use client';
 
-import { RECENT_DONATIONS } from '@/constants';
+import { RECENT_DONATIONS } from '@/lib/constants';
 
 export function RecentDonations() {
   return (
